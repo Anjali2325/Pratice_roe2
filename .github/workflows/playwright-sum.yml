@@ -1,4 +1,4 @@
-name: Playwright - Sum Tables
+name: Playwright Python Sum Tables
 
 on:
   workflow_dispatch:
@@ -9,24 +9,22 @@ on:
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '18'
-          cache: 'npm'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
-          npm ci
-          # Install playwright browsers
-          npx playwright install --with-deps
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m playwright install --with-deps
 
-      - name: Run scraper — 22f3002992@ds.study.iitm.ac.in
-        # <<-- this step name MUST contain the required email address
+      - name: Run Playwright script — 22f3002992@ds.study.iitm.ac.in
         run: |
-          echo "Starting Playwright scraper..."
-          node sum_tables.js
+          python sum_tables.py
